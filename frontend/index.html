@@ -54,15 +54,34 @@
 
     <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvashelp" aria-labelledby="offcanvasRightLabel">
         <div class="offcanvas-header">
-          <h5 class="offcanvas-title" id="offcanvasRightLabel">Procedimiento</h5>
+          <h5 class="offcanvas-title" id="offcanvasRightLabel"><b>Procedimiento</b></h5>
           <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
         </div>
         <div class="offcanvas-body">
-            1. Elergir archivos. <br>
-            2. Cargar archivos (Botón Subir Archivo) <br>
-            3. Asegurar la zona en el mapa (Botón Vista Previa) <br>
-            4. Transformar/Proyectar el archivo en MAGA Geográfico (Botón Procear Archivo) <br>
-            5. Descargar archivo para cargar en ATLAS (Botón Descargar Resultado) <br>    
+            <b>1. Elergir archivo:</b> seleccione el(los) archivo(s) a cagar con el botón "Elegir archivos".<br>
+            <b>2. Cargar archivos:</b> clic en el "botón "Subir Archivos" <br>
+            <b>3. Asegurar la zona:</b> confirmar en el mapa, botón "Vista Previa", la zona objeto de solicitud. <br>
+            <b>4. Transformar/Proyectar:</b> crear el nuevo archivo (CRS)en MAGA Geográfico - ESPG 4686 (botón "Procear Archivo"). <br>
+            <b>5. Descargar archivo:</b> descargar archivo en formato .zip para cargar en el formulario de Solicitud de Servicio de ATLAS (Botón Descargar Resultado). <br><br>
+            
+            <h5><b>Notas</b></h5>
+            - Es su responsabilidad asegurar que la zona resultante corresponde al área de interés. <br>
+            - No se admiten archivos con registros multifeature, es decir, cuando un (1) registro cuenta con más de un elemento geográfico. <br>
+            - Para el caso de Shapefile (.shp), se deben cargar mínimo los archivos (.shp, .shx y .prj).
+             <br><br>
+
+            <h5><b>Formatos Geográficos admitidos</b></h5><br>           
+            - kmz.
+            - kml.
+            - shp.
+            - gpx.
+            - gpkg.
+            <br><br>
+            
+            <h5><b>Soporte</b></h5>
+            En caso de encontrar alguna falla, reportar a <a href="">john.sanabria@ecopetrol.com.co</a>, <a href="">jaime.rodriguez@arcerojas.com </a>.
+
+
         </div>
     </div>
     <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvascredits" aria-labelledby="offcanvasRightLabel">
@@ -72,12 +91,12 @@
         </div>
         <div class="offcanvas-body">
              <br>
-            <h3>Departamento de Tierras y Activos Fijos</h3><br>
-            <h4>Coordinación Gestión de la Demanda</h4><br>
+            <b><h3>Departamento de Tierras y Activos Fijos</h3></b><br>
+            <b>Coordinación Gestión de la Demanda <br>Equipo Data y Tecnología</b><br>
             <br><br>
-            <h4>Equipo Data y Tecnología</h3><br><br>
-            <h5>Arce Rojas Consultores</h3><br>
-            <h5>Esteban Rodriguez</h3><br>
+
+            Arce Rojas Consultores<br>
+            Esteban Rodriguez<br>
         </div>
     </div>
 
