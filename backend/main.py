@@ -26,7 +26,7 @@ app.mount("/static", StaticFiles(directory="frontend"), name="static")
 
 async def cleanup_temp_files():
     # Esperar 5 segundos antes de limpiar
-    await asyncio.sleep(20)
+    await asyncio.sleep(10)
 
     # Eliminar todo el contenido de TEMP_DIR
     temp_dir = Path(TEMP_DIR)
@@ -70,16 +70,18 @@ async def upload_geofile(files: List[UploadFile] = File(...)):
             if missing:
                 raise HTTPException(
                     status_code=400,
-                    detail=f"Archivos requeridos faltantes: {', '.join(missing)}"
+                    detail=f"Archivos de Shapefile requeridos faltantes: {', '.join(missing)}"
                 )
 
         # ===========================================================================
         # 2. Guardar archivos
         # ===========================================================================
+        if (is_shapefile == False and len(files)!=1):
+           raise HTTPException(400, f"Si el archivo no está en formato Shapefile, solamente debe elegir un archivo. Está intentando cargar {len(files)} archivos")
         saved_files = []
         for file in files:
             if is_shapefile:
-                # Para Shapefile: {file_id}_{base_name}.ext
+                # Para Shapefile: {file_id}_{base_name}.ext 
                 ext = Path(file.filename).suffix
                 filename = f"{file_id}_{base_filename}{ext}"
             else:
@@ -104,8 +106,8 @@ async def upload_geofile(files: List[UploadFile] = File(...)):
 
     except Exception as e:
         # Limpiar archivos en caso de error
-        for f in saved_files:
-            (TEMP_DIR / f).unlink(missing_ok=True)
+        #for f in saved_files:
+        #    (TEMP_DIR / f).unlink(missing_ok=True)
         raise HTTPException(500, f"Error subiendo archivos: {str(e)}")
 
 
@@ -201,6 +203,15 @@ async def preview_map(file_id: str, filename: str):
             gdf = gpd.read_file(input_path, engine='fiona')
         else:
             gdf = gpd.read_file(input_path, engine='pyogrio')
+        
+        # Validar geometrías
+        for index, row in gdf.iterrows():
+            geom = row.geometry
+            geom_type = geom.geom_type
+            multi_geoms = ["MultiPoint", "MultiLineString", "MultiPolygon"]
+            
+            if geom_type in multi_geoms and len(geom.geoms) > 1:
+                raise HTTPException(400, f"Geometría {geom_type} con múltiples partes encontrada")
 
         gdf = gdf.to_crs(4686)
         

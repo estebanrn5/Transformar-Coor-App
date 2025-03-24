@@ -23,6 +23,12 @@ async function uploadFile() {
             method: 'POST',
             body: formData  // No se necesita header 'Content-Type' para FormData
         });
+
+        // 1. Primero validamos si hay error HTTP
+        if (!response.ok) {
+            const error = await response.text();
+            throw new Error(`Error ${response.status}: ${error}`);
+        }
         
         const data = await response.json();
         console.log("Respuesta del servidor:", data);
@@ -37,7 +43,6 @@ async function uploadFile() {
         alert('Error subiendo archivos: ' + error.message);
     }
 }
-
 
 async function processFile() {
     try {
@@ -71,13 +76,24 @@ async function processFile() {
 async function previewMap() {
     try {
         const response = await fetch(`/preview/${currentFileId}?filename=${currentFilename}`);
+        
+        // 1. Primero validamos si hay error HTTP
+        if (!response.ok) {
+            const error = await response.text();
+            throw new Error(`Error ${response.status}: ${error}`);
+        }
+
+        // 2. Si todo está bien, procesamos la respuesta
         const mapUrl = URL.createObjectURL(await response.blob());
         
         const mapContainer = document.getElementById('mapContainer');
         mapContainer.innerHTML = `<iframe src="${mapUrl}" style="width:100%; height:100%; border:none"></iframe>`;
 
-        document.getElementById('procces').classList.remove('disabled')
+        // 3. **SOLO EN CASO DE ÉXITO** habilitar el botón
+        document.getElementById('procces').classList.remove('disabled');
     } catch (error) {
+        // 4. En caso de error: mostrar mensaje y NO habilitar
         alert('Error generando vista previa: ' + error.message);
     }
 }
+
